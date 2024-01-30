@@ -1,0 +1,100 @@
+models:
+  # For News
+  NewsCategory:
+    name: string unique
+    slug: string unique
+    status: boolean default:false
+    relationships:
+      hasMany: NewsSubcategory
+    softDeletes
+
+  NewsSubcategory:
+    news_category_id: id foreign:news_categories onDelete
+    name: string unique
+    slug: string unique
+    show_on_navbar: boolean default:false
+    show_on_page: boolean default:false
+    relationships:
+      belongsTo: NewsCategory
+      hasMany: NewsContent
+    softDeletes
+
+  NewsContent:
+    news_subcategory_id: id foreign:news_subcategories
+    author_id: id foreign:users
+    title: string unique
+    slug: string unique
+    content: text
+    type: enum:article,video
+    thumbnail: string
+    video_url: string nullable
+    caption: string nullable
+    reading_time: integer
+    status: enum:draft,published,archived
+    published_at: timestamp nullable
+    relationships:
+      belongsTo: NewsSubcategory
+      belongsToMany: NewsTag
+    softDeletes
+
+  NewsTag:
+    name: string unique
+    slug: string unique
+    relationships:
+      belongsToMany: NewsContent
+    softDeletes
+
+  # For Reel
+  ReelVideo:
+    title: string unique
+    slug: string unique
+    description: text
+    thumbnail: string
+    video_url: string nullable
+    status: enum:draft,published,archived
+    published_at: timestamp nullable
+    view: integer default:0
+    is_top: boolean default:false
+    is_editors_pick: boolean default:false
+    relationships:
+      belongsToMany: Playlist
+      belongsTo: Topic
+    softDeletes
+
+  Playlist:
+    title: string unique
+    slug: string unique
+    description: text nullable
+    relationships:
+      belongsToMany: ReelVideo
+    softDeletes
+
+  Topic:
+    name: string unique
+    slug: string unique
+    description: text nullable
+    relationships:
+      hasMany: ReelVideo
+    softDeletes
+
+  # For Gallery
+  Album:
+    title: string unique
+    slug: string unique
+    description: text nullable
+    status: enum:draft,published,archived
+    published_at: timestamp nullable
+    relationships:
+      hasMany: AlbumPhoto
+    softDeletes
+
+  AlbumPhoto:
+    album_id: foreign
+    image_url: string
+    caption: text nullable
+    owner: string nullable
+    relationships:
+      belongsTo: Album
+    softDeletes
+
+seeders: NewsCategory, NewsSubcategory, NewsContent, NewsTag, ReelVideo, Playlist, Topic, Album, AlbumPhoto

@@ -1,2 +1,50 @@
+created:
+    - database/factories/NewsCategoryFactory.php
+    - database/factories/NewsSubcategoryFactory.php
+    - database/factories/NewsContentFactory.php
+    - database/factories/NewsTagFactory.php
+    - database/factories/ReelVideoFactory.php
+    - database/factories/PlaylistFactory.php
+    - database/factories/TopicFactory.php
+    - database/factories/AlbumFactory.php
+    - database/factories/AlbumPhotoFactory.php
+    - database/migrations/2024_01_30_130910_create_news_categories_table.php
+    - database/migrations/2024_01_30_130911_create_news_subcategories_table.php
+    - database/migrations/2024_01_30_130912_create_news_contents_table.php
+    - database/migrations/2024_01_30_130913_create_news_tags_table.php
+    - database/migrations/2024_01_30_130914_create_reel_videos_table.php
+    - database/migrations/2024_01_30_130915_create_playlists_table.php
+    - database/migrations/2024_01_30_130916_create_topics_table.php
+    - database/migrations/2024_01_30_130917_create_albums_table.php
+    - database/migrations/2024_01_30_130918_create_album_photos_table.php
+    - database/migrations/2024_01_30_130919_create_news_content_news_tag_table.php
+    - database/migrations/2024_01_30_130920_create_playlist_reel_video_table.php
+    - app/Models/NewsCategory.php
+    - app/Models/NewsSubcategory.php
+    - app/Models/NewsContent.php
+    - app/Models/NewsTag.php
+    - app/Models/ReelVideo.php
+    - app/Models/Playlist.php
+    - app/Models/Topic.php
+    - app/Models/Album.php
+    - app/Models/AlbumPhoto.php
+    - database/seeders/NewsCategorySeeder.php
+    - database/seeders/NewsSubcategorySeeder.php
+    - database/seeders/NewsContentSeeder.php
+    - database/seeders/NewsTagSeeder.php
+    - database/seeders/ReelVideoSeeder.php
+    - database/seeders/PlaylistSeeder.php
+    - database/seeders/TopicSeeder.php
+    - database/seeders/AlbumSeeder.php
+    - database/seeders/AlbumPhotoSeeder.php
 models:
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string:100 nullable' }
+    NewsCategory: { name: 'string unique', slug: 'string unique', status: 'boolean default:false', relationships: { hasMany: NewsSubcategory }, softdeletes: softDeletes }
+    NewsSubcategory: { news_category_id: 'id foreign:news_categories onDelete', name: 'string unique', slug: 'string unique', show_on_navbar: 'boolean default:false', show_on_page: 'boolean default:false', relationships: { belongsTo: NewsCategory, hasMany: NewsContent }, softdeletes: softDeletes }
+    NewsContent: { news_subcategory_id: 'id foreign:news_subcategories', author_id: 'id foreign:users', title: 'string unique', slug: 'string unique', content: text, type: 'enum:article,video', thumbnail: string, video_url: 'string nullable', caption: 'string nullable', reading_time: integer, status: 'enum:draft,published,archived', published_at: 'timestamp nullable', relationships: { belongsTo: NewsSubcategory, belongsToMany: NewsTag }, softdeletes: softDeletes }
+    NewsTag: { name: 'string unique', slug: 'string unique', relationships: { belongsToMany: NewsContent }, softdeletes: softDeletes }
+    ReelVideo: { title: 'string unique', slug: 'string unique', description: text, thumbnail: string, video_url: 'string nullable', status: 'enum:draft,published,archived', published_at: 'timestamp nullable', view: 'integer default:0', is_top: 'boolean default:false', is_editors_pick: 'boolean default:false', relationships: { belongsToMany: Playlist, belongsTo: Topic }, softdeletes: softDeletes }
+    Playlist: { title: 'string unique', slug: 'string unique', description: 'text nullable', relationships: { belongsToMany: ReelVideo }, softdeletes: softDeletes }
+    Topic: { name: 'string unique', slug: 'string unique', description: 'text nullable', relationships: { hasMany: ReelVideo }, softdeletes: softDeletes }
+    Album: { title: 'string unique', slug: 'string unique', description: 'text nullable', status: 'enum:draft,published,archived', published_at: 'timestamp nullable', relationships: { hasMany: AlbumPhoto }, softdeletes: softDeletes }
+    AlbumPhoto: { album_id: foreign, image_url: string, caption: 'text nullable', owner: 'string nullable', relationships: { belongsTo: Album }, softdeletes: softDeletes }

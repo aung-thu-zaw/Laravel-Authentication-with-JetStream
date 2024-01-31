@@ -41,7 +41,10 @@ class NewsSubcategoryResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Fieldset::make('Status')->schema([Forms\Components\Toggle::make('show_on_navbar')->required(), Forms\Components\Toggle::make('show_on_page')->required()]),
+                Fieldset::make('Status')->schema([
+                    Forms\Components\Toggle::make('show_on_navbar')->required(),
+                    Forms\Components\Toggle::make('show_on_page')->required()
+                ]),
             ]),
         ]);
     }

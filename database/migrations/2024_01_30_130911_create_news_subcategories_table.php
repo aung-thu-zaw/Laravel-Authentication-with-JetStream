@@ -15,7 +15,7 @@ return new class extends Migration
 
         Schema::create('news_subcategories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_category_id')->constrained()->onDelete();
+            $table->foreignId('news_category_id')->constrained()->cascadeOnDelete();
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->boolean('show_on_navbar')->default(false);

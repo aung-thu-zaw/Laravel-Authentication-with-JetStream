@@ -29,7 +29,7 @@ class NewsContentFactory extends Factory
             'slug' => $this->faker->slug(),
             'content' => $this->faker->paragraphs(3, true),
             'type' => $this->faker->randomElement(["article","video"]),
-            'thumbnail' => $this->faker->word(),
+            'thumbnail' => $this->faker->imageUrl(),
             'video_url' => $this->faker->word(),
             'caption' => $this->faker->word(),
             'reading_time' => $this->faker->numberBetween(-10000, 10000),

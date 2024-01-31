@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,9 @@ use Spatie\Sluggable\SlugOptions;
 
 class NewsContent extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug;
+    use HasFactory;
+    use SoftDeletes;
+    use HasSlug;
 
     /**
      * Get the options for generating the slug.
@@ -32,6 +35,13 @@ class NewsContent extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    protected function thumbnail(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => str_starts_with($value, 'http') || ! $value ? $value : asset("storage/news-content/$value"),
+        );
     }
 
     public function newsSubcategory(): BelongsTo

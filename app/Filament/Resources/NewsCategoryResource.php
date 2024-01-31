@@ -36,7 +36,7 @@ class NewsCategoryResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->string()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\Select::make('status')->options([
                     true => 'Show',
@@ -58,6 +58,7 @@ class NewsCategoryResource extends Resource
                     false => 'Hide',
                 ]),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('status')->options([

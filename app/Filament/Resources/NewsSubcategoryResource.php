@@ -4,12 +4,20 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\NewsSubcategoryResource\Pages;
 use App\Models\NewsSubcategory;
-use Filament\Forms;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -32,62 +40,55 @@ class NewsSubcategoryResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form->schema([
-            Section::make()->schema([
-                Forms\Components\Select::make('news_category_id')
-                    ->relationship('newsCategory', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Fieldset::make('Status')->schema([
-                    Forms\Components\Toggle::make('show_on_navbar')->required(),
-                    Forms\Components\Toggle::make('show_on_page')->required(),
-                ]),
-            ]),
-        ]);
+        return $form->schema(NewsSubcategory::getForm());
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('newsCategory.name')
+                TextColumn::make('newsCategory.name')
+                    ->label("Category")
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('show_on_navbar'),
 
-                Tables\Columns\ToggleColumn::make('show_on_page'),
+                ToggleColumn::make('show_on_navbar'),
+
+                ToggleColumn::make('show_on_page'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
-                Tables\Filters\SelectFilter::make('show_on_navbar')->options([
+           TrashedFilter::make(),
+
+           SelectFilter::make('show_on_navbar')
+                ->options([
                     true => 'show',
                     false => 'hide',
                 ]),
-                Tables\Filters\SelectFilter::make('show_on_page')->options([
+
+           SelectFilter::make('show_on_page')
+                ->options([
                     true => 'show',
                     false => 'hide',
                 ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make()
             ])
-            ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make(), Tables\Actions\ForceDeleteBulkAction::make(), Tables\Actions\RestoreBulkAction::make()])]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make()
+                ])
+            ]);
     }
 
     public static function getPages(): array

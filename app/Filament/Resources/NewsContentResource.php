@@ -3,16 +3,22 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NewsContentResource\Pages;
+use App\Filament\Resources\NewsContentResource\RelationManagers\NewsTagsRelationManager;
 use App\Models\NewsContent;
-use Filament\Forms;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -29,89 +35,88 @@ class NewsContentResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Contents';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
-        return $form->schema([
-            Section::make()->schema([
-                Forms\Components\Select::make('news_subcategory_id')
-                    ->label('News Subcategory')
-                    ->relationship('newsSubCategory', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                RichEditor::make('content'),
-
-                Select::make('type')->options([
-                    'article' => 'Article',
-                    'video' => 'Video',
-                ]),
-
-                Forms\Components\TextInput::make('video_url')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('caption')
-                    ->required()
-                    ->maxLength(255),
-
-                Select::make('status')->label('status')->options([
-                    'draft' => 'Draft',
-                    'published' => 'Published',
-                    'archived' => 'Archived',
-                ]),
-
-            ]),
-        ]);
+        return $form->schema(NewsContent::getForm());
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                ImageColumn::make('thumbnail'),
+                ImageColumn::make('thumbnail')->size(60),
 
-                Tables\Columns\TextColumn::make('newsSubCategory.name')
+               TextColumn::make('newsSubCategory.name')
                     ->label('Subcategory')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('author.name')
+
+               TextColumn::make('author.name')
                     ->label('Author')
                     ->numeric()
-                    ->sortable()
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('type')
+               TextColumn::make('title')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50)
+                    ->searchable(),
+
+               TextColumn::make('type')
                     ->badge()
                     ->color(
                         fn (string $state): string => match ($state) {
                             'article' => 'info',
                             'video' => 'success',
+                            default => 'warning',
                         },
                     ),
-
-                // SelectColumn::make('status')->options([
-                //     'draft' => 'Draft',
-                //     'published' => 'Published',
-                //     'archived' => 'Archived',
-                // ]),
             ])
-            ->filters([Tables\Filters\TrashedFilter::make()])
-            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make(), Tables\Actions\ForceDeleteAction::make(), Tables\Actions\RestoreAction::make()])
-            ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make(), Tables\Actions\ForceDeleteBulkAction::make(), Tables\Actions\RestoreBulkAction::make()])]);
+            ->defaultSort("id", "desc")
+            ->filters([
+                TrashedFilter::make(),
+
+                SelectFilter::make('type')->options([
+                    'article' => 'Article',
+                    'video' => 'Video',
+                ]),
+
+                SelectFilter::make('newsSubCategory')
+                ->label('Subcategory')
+                ->relationship('newsSubCategory', 'name')
+                ->searchable()
+                ->preload(),
+
+                SelectFilter::make('author')
+                ->label('Author')
+                ->relationship('author', 'name')
+                ->searchable()
+                ->preload()
+
+            ])
+            ->actions([
+                EditAction::make(),
+                DeleteAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make()
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                DeleteBulkAction::make(),
+                ForceDeleteBulkAction::make(),
+                RestoreBulkAction::make()
+                ])
+            ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            // NewsTagsRelationManager::class
         ];
     }
 

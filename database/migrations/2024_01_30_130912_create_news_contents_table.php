@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->string('thumbnail');
             $table->string('video_url')->nullable();
             $table->string('caption')->nullable();
-            $table->integer('reading_time');
+            $table->integer('reading_time')->nullable();
             $table->enum('status', ['draft', 'published', 'archived']);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

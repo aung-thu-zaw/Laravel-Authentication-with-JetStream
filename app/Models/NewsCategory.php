@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,5 +41,23 @@ class NewsCategory extends Model
     public function newsSubcategories(): HasMany
     {
         return $this->hasMany(NewsSubcategory::class);
+    }
+
+    public static function getForm(): array
+    {
+        return [
+            Section::make()->schema([
+                TextInput::make('name')
+                    ->required()
+                    ->string()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
+
+                Select::make('status')->options([
+                    true => 'Show',
+                    false => 'Hide',
+                ]),
+            ]),
+        ];
     }
 }

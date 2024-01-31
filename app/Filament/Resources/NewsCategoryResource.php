@@ -4,18 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\NewsCategoryResource\Pages;
 use App\Models\NewsCategory;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\RestoreAction;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -43,20 +40,7 @@ class NewsCategoryResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form->schema([
-            Section::make()->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->string()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-
-                Select::make('status')->options([
-                    true => 'Show',
-                    false => 'Hide',
-                ]),
-            ]),
-        ]);
+        return $form->schema(NewsCategory::getForm());
     }
 
     public static function table(Table $table): Table
@@ -67,7 +51,8 @@ class NewsCategoryResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                SelectColumn::make('status')->options([
+                SelectColumn::make('status')
+                ->options([
                     true => 'Show',
                     false => 'Hide',
                 ]),
@@ -80,15 +65,18 @@ class NewsCategoryResource extends Resource
                     false => 'hide',
                 ]),
             ])
-            ->actions([EditAction::make(), DeleteAction::make(), ForceDeleteAction::make(), RestoreAction::make()])
-            ->bulkActions([Tables\Actions\BulkActionGroup::make([DeleteBulkAction::make(), ForceDeleteBulkAction::make(), RestoreBulkAction::make()])]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+            ->actions([
+                EditAction::make(),
+                DeleteAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make()
+            ])
+            ->bulkActions([BulkActionGroup::make([
+                DeleteBulkAction::make(),
+                ForceDeleteBulkAction::make(),
+                RestoreBulkAction::make()
+                ])
+            ]);
     }
 
     public static function getPages(): array

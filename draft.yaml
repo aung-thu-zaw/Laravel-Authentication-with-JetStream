@@ -42,7 +42,6 @@ models:
     slug: string unique
     relationships:
       belongsToMany: NewsContent
-    softDeletes
 
   # For Reel
   ReelVideo:

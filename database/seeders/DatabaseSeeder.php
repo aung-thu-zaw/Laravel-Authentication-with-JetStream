@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             NewsSubcategorySeeder::class,
             NewsTagSeeder::class,
             NewsContentSeeder::class,
+            ReelVideoSeeder::class
         ]);
     }
 }

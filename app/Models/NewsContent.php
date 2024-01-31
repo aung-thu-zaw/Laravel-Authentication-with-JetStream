@@ -108,28 +108,29 @@ class NewsContent extends Model
                         ->nullable()
                         ->columnSpanFull()
                         ->maxLength(255)
-                        ->visible(fn (Get $get): bool => $get('type') === 'video'),
+                        ->visible(fn(Get $get): bool => $get('type') === 'video'),
 
                     TextInput::make('caption')
                         ->columnSpanFull()
                         ->nullable()
                         ->maxLength(255)
-                        ->visible(fn (Get $get): bool => $get('type') === 'video'),
+                        ->visible(fn(Get $get): bool => $get('type') === 'video'),
 
                     Select::make('newsTags')
-                        ->label("Tags")
+                        ->label('Tags')
                         ->relationship('newsTags', 'name')
                         ->multiple()
                         ->columnSpanFull(),
 
                     FileUpload::make('thumbnail')
+                        ->required()
                         ->columnSpanFull()
                         ->maxSize(1000)
                         ->image()
                         ->disk('public')
                         ->directory('news-contents')
                         ->imageEditor()
-                        ->getUploadedFileNameForStorageUsing(fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())->prepend(time() . '-')),
+                        ->getUploadedFileNameForStorageUsing(fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())->prepend(time() . '-')),
                 ]),
         ];
     }

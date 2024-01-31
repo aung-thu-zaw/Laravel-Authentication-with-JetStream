@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\ReelVideo;
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ReelVideoFactory extends Factory
@@ -24,14 +25,16 @@ class ReelVideoFactory extends Factory
             'title' => $this->faker->sentence(4),
             'slug' => $this->faker->slug(),
             'description' => $this->faker->text(),
-            'thumbnail' => $this->faker->word(),
-            'video_url' => $this->faker->word(),
+            'thumbnail' => $this->faker->imageUrl(),
+            'video_path' => $this->faker->url(),
             'status' => $this->faker->randomElement(['draft', 'published', 'archived']),
             'published_at' => $this->faker->dateTime(),
-            'view' => $this->faker->numberBetween(-10000, 10000),
+            'view' => $this->faker->numberBetween(1, 10000),
             'is_top' => $this->faker->boolean(),
             'is_editors_pick' => $this->faker->boolean(),
             'topic_id' => Topic::factory(),
+            'uploaded_by' => User::factory(),
+            'video_by' => $this->faker->name()
         ];
     }
 }

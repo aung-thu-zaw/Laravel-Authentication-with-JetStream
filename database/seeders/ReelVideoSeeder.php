@@ -12,6 +12,6 @@ class ReelVideoSeeder extends Seeder
      */
     public function run(): void
     {
-        ReelVideo::factory()->count(5)->create();
+        ReelVideo::factory()->count(100)->create();
     }
 }

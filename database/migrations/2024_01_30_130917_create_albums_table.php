@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->enum('status', ["draft","published","archived"]);
+            $table->enum('status', ['draft', 'published', 'archived']);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

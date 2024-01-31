@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\NewsContent;
 use App\Models\NewsSubcategory;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NewsContentFactory extends Factory
 {
@@ -28,12 +27,12 @@ class NewsContentFactory extends Factory
             'title' => $this->faker->sentence(4),
             'slug' => $this->faker->slug(),
             'content' => $this->faker->paragraphs(3, true),
-            'type' => $this->faker->randomElement(["article","video"]),
+            'type' => $this->faker->randomElement(['article', 'video']),
             'thumbnail' => $this->faker->imageUrl(),
             'video_url' => $this->faker->word(),
             'caption' => $this->faker->word(),
             'reading_time' => $this->faker->numberBetween(-10000, 10000),
-            'status' => $this->faker->randomElement(["draft","published","archived"]),
+            'status' => $this->faker->randomElement(['draft', 'published', 'archived']),
             'published_at' => $this->faker->dateTime(),
         ];
     }

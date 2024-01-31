@@ -14,8 +14,8 @@ use Spatie\Sluggable\SlugOptions;
 class NewsContent extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use HasSlug;
+    use SoftDeletes;
 
     /**
      * Get the options for generating the slug.

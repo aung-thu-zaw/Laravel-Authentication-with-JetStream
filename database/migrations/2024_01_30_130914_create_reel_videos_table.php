@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('thumbnail');
             $table->string('video_url')->nullable();
-            $table->enum('status', ["draft","published","archived"]);
+            $table->enum('status', ['draft', 'published', 'archived']);
             $table->timestamp('published_at')->nullable();
             $table->integer('view')->default(0);
             $table->boolean('is_top')->default(false);

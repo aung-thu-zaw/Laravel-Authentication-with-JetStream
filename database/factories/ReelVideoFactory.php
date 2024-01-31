@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\ReelVideo;
 use App\Models\Topic;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ReelVideoFactory extends Factory
 {
@@ -27,7 +26,7 @@ class ReelVideoFactory extends Factory
             'description' => $this->faker->text(),
             'thumbnail' => $this->faker->word(),
             'video_url' => $this->faker->word(),
-            'status' => $this->faker->randomElement(["draft","published","archived"]),
+            'status' => $this->faker->randomElement(['draft', 'published', 'archived']),
             'published_at' => $this->faker->dateTime(),
             'view' => $this->faker->numberBetween(-10000, 10000),
             'is_top' => $this->faker->boolean(),

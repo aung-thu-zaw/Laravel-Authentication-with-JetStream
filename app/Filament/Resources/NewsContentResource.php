@@ -3,10 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NewsContentResource\Pages;
-use App\Filament\Resources\NewsContentResource\RelationManagers;
 use App\Models\NewsContent;
 use Filament\Forms;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -31,7 +29,6 @@ class NewsContentResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Contents';
 
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 3;
@@ -41,32 +38,31 @@ class NewsContentResource extends Resource
         return $form->schema([
             Section::make()->schema([
                 Forms\Components\Select::make('news_subcategory_id')
-                ->label("News Subcategory")
+                    ->label('News Subcategory')
                     ->relationship('newsSubCategory', 'name')
                     ->required(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                    RichEditor::make('content'),
+                RichEditor::make('content'),
 
-                    Select::make("type")->options([
-                        "article" => "Article",
-                        "video" => "Video",
-                    ]),
+                Select::make('type')->options([
+                    'article' => 'Article',
+                    'video' => 'Video',
+                ]),
 
-                    Forms\Components\TextInput::make('video_url')
+                Forms\Components\TextInput::make('video_url')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\TextInput::make('caption')
+                Forms\Components\TextInput::make('caption')
                     ->required()
                     ->maxLength(255),
 
-                    Select::make("status")->label("status")->options([
-                        "draft" => "Draft",
-                        "published" => "Published",
-                        "archived" => "Archived",
-                    ]),
-
+                Select::make('status')->label('status')->options([
+                    'draft' => 'Draft',
+                    'published' => 'Published',
+                    'archived' => 'Archived',
+                ]),
 
             ]),
         ]);
@@ -115,8 +111,8 @@ class NewsContentResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //
-            ];
+            //
+        ];
     }
 
     public static function getPages(): array

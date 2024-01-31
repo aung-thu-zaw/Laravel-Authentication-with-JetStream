@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Album;
 use App\Models\AlbumPhoto;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AlbumPhotoFactory extends Factory
 {

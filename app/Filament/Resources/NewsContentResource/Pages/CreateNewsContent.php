@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\NewsContentResource\Pages;
 
 use App\Filament\Resources\NewsContentResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateNewsContent extends CreateRecord

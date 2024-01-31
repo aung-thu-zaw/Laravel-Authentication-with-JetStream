@@ -12,7 +12,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class NewsSubcategory extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug;
+    use HasFactory, HasSlug, SoftDeletes;
 
     /**
      * Get the options for generating the slug.

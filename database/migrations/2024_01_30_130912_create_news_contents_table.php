@@ -20,12 +20,12 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->text('content');
-            $table->enum('type', ["article","video"]);
+            $table->enum('type', ['article', 'video']);
             $table->string('thumbnail');
             $table->string('video_url')->nullable();
             $table->string('caption')->nullable();
             $table->integer('reading_time');
-            $table->enum('status', ["draft","published","archived"]);
+            $table->enum('status', ['draft', 'published', 'archived']);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

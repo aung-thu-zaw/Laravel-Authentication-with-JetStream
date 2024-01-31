@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Album;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AlbumFactory extends Factory
 {
@@ -24,7 +23,7 @@ class AlbumFactory extends Factory
             'title' => $this->faker->sentence(4),
             'slug' => $this->faker->slug(),
             'description' => $this->faker->text(),
-            'status' => $this->faker->randomElement(["draft","published","archived"]),
+            'status' => $this->faker->randomElement(['draft', 'published', 'archived']),
             'published_at' => $this->faker->dateTime(),
         ];
     }

@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\NewsCategory;
 use App\Models\NewsSubcategory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NewsSubcategoryFactory extends Factory
 {

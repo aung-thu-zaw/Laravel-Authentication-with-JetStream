@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NewsSubcategoryResource\Pages;
-use App\Filament\Resources\NewsSubcategoryResource\RelationManagers;
 use App\Models\NewsSubcategory;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
@@ -43,7 +42,7 @@ class NewsSubcategoryResource extends Resource
                     ->maxLength(255),
                 Fieldset::make('Status')->schema([
                     Forms\Components\Toggle::make('show_on_navbar')->required(),
-                    Forms\Components\Toggle::make('show_on_page')->required()
+                    Forms\Components\Toggle::make('show_on_page')->required(),
                 ]),
             ]),
         ]);
@@ -79,16 +78,16 @@ class NewsSubcategoryResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make()
-                ])
+                Tables\Actions\RestoreAction::make(),
+            ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make(), Tables\Actions\ForceDeleteBulkAction::make(), Tables\Actions\RestoreBulkAction::make()])]);
     }
 
     public static function getRelations(): array
     {
         return [
-                //
-            ];
+            //
+        ];
     }
 
     public static function getPages(): array

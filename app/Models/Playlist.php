@@ -54,8 +54,7 @@ class Playlist extends Model
 
                 Textarea::make('description')
                        ->string()
-                       ->required()
-                       ->columnSpanFull(),
+                       ->required(),
             ])
         ];
     }

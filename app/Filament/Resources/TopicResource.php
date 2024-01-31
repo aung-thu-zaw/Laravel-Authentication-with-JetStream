@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PlaylistResource\Pages;
-use App\Models\Playlist;
+use App\Filament\Resources\TopicResource\Pages;
+use App\Filament\Resources\TopicResource\RelationManagers;
+use App\Models\Topic;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -20,51 +23,47 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PlaylistResource extends Resource
+class TopicResource extends Resource
 {
-    protected static ?string $model = Playlist::class;
+    protected static ?string $model = Topic::class;
 
     protected static ?string $navigationGroup = 'Reel Management';
 
-    protected static ?string $navigationLabel = 'Playlists';
+    protected static ?string $navigationLabel = 'Topics';
 
-    protected static ?string $modelLabel = 'Playlist';
+    protected static ?string $modelLabel = 'Topic';
 
-    protected static ?string $pluralModelLabel = 'Playlists';
+    protected static ?string $pluralModelLabel = 'Topics';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-star';
 
-    protected static ?int $navigationSort = 3;
-
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(Playlist::getForm());
+        return $form->schema(Topic::getForm());
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-            TextColumn::make('title')
-                ->sortable()
-                ->searchable(),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
 
-            TextColumn::make('description')
-                ->limit(80)
-                ->sortable()
-                ->searchable(),
+                TextColumn::make('description')
+                    ->limit(80)
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('reel_videos_count')
-                ->sortable()
-                ->label("Total Videos")
-                ->counts('reelVideos')
+                    ->sortable()
+                    ->label('Total Videos')
+                    ->counts('reelVideos'),
             ])
-            ->defaultSort("id", "desc")
-            ->filters([
-                TrashedFilter::make(),
-            ])
+            ->defaultSort('id', 'desc')
+            ->filters([TrashedFilter::make()])
             ->actions([
                 EditAction::make(),
                 DeleteAction::make(),
@@ -72,28 +71,25 @@ class PlaylistResource extends Resource
                 RestoreAction::make()
             ])
             ->bulkActions([
-                BulkActionGroup::make([
+                BulkActionGroup::make(
+                    [
                     DeleteBulkAction::make(),
                     ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
-            ]);
+                    RestoreBulkAction::make()]
+                )]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPlaylists::route('/'),
-            'create' => Pages\CreatePlaylist::route('/create'),
-            'edit' => Pages\EditPlaylist::route('/{record}/edit'),
+            'index' => Pages\ListTopics::route('/'),
+            'create' => Pages\CreateTopic::route('/create'),
+            'edit' => Pages\EditTopic::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 }

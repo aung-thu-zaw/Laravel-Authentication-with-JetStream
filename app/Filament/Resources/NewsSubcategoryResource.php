@@ -95,8 +95,8 @@ class NewsSubcategoryResource extends Resource
     {
         return [
             'index' => Pages\ListNewsSubcategories::route('/'),
-            'create' => Pages\CreateNewsSubcategory::route('/create'),
-            'edit' => Pages\EditNewsSubcategory::route('/{record}/edit'),
+            // 'create' => Pages\CreateNewsSubcategory::route('/create'),
+            // 'edit' => Pages\EditNewsSubcategory::route('/{record}/edit'),
         ];
     }
 

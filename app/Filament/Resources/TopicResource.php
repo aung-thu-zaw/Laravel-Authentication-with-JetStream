@@ -83,8 +83,8 @@ class TopicResource extends Resource
     {
         return [
             'index' => Pages\ListTopics::route('/'),
-            'create' => Pages\CreateTopic::route('/create'),
-            'edit' => Pages\EditTopic::route('/{record}/edit'),
+            // 'create' => Pages\CreateTopic::route('/create'),
+            // 'edit' => Pages\EditTopic::route('/{record}/edit'),
         ];
     }
 

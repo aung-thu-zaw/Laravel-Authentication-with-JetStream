@@ -6,6 +6,7 @@ use App\Filament\Resources\PlaylistResource\Pages;
 use App\Models\Playlist;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -66,6 +67,10 @@ class PlaylistResource extends Resource
                 TrashedFilter::make(),
             ])
             ->actions([
+                Action::make("Add Videos To Playlist")
+                ->color('success')
+                ->icon('heroicon-o-plus')
+                ->url(fn (Playlist $record) => self::getUrl('add-videos', ['record' => $record])),
                 EditAction::make(),
                 DeleteAction::make(),
                 ForceDeleteAction::make(),
@@ -84,8 +89,9 @@ class PlaylistResource extends Resource
     {
         return [
             'index' => Pages\ListPlaylists::route('/'),
-            'create' => Pages\CreatePlaylist::route('/create'),
-            'edit' => Pages\EditPlaylist::route('/{record}/edit'),
+            'add-videos' => Pages\AddVideosToPlaylist::route('/{record}/add-videos'),
+            // 'create' => Pages\CreatePlaylist::route('/create'),
+            // 'edit' => Pages\EditPlaylist::route('/{record}/edit'),
         ];
     }
 

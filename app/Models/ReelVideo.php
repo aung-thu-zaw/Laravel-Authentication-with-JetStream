@@ -46,7 +46,7 @@ class ReelVideo extends Model
 
     public function playlists(): BelongsToMany
     {
-        return $this->belongsToMany(Playlist::class);
+        return $this->belongsToMany(Playlist::class,'playlist_reel_video');
     }
 
     public function topic(): BelongsTo

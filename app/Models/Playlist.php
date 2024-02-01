@@ -40,7 +40,7 @@ class Playlist extends Model
 
     public function reelVideos(): BelongsToMany
     {
-        return $this->belongsToMany(ReelVideo::class);
+        return $this->belongsToMany(ReelVideo::class,'playlist_reel_video');
     }
 
     public static function getForm(): array

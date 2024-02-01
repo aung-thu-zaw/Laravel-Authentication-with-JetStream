@@ -10,12 +10,9 @@ class EditReelVideo extends EditRecord
 {
     protected static string $resource = ReelVideoResource::class;
 
-    protected function getHeaderActions(): array
+    protected function getRedirectUrl(): string
     {
-        return [
-            Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
-        ];
+        return $this->getResource()::getUrl('index');
     }
+
 }
